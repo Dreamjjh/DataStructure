@@ -23,5 +23,11 @@
     <ClInclude Include="stack_seq.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="stack_link.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="queue_link.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
