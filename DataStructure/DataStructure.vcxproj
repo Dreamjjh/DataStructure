@@ -22,9 +22,7 @@
     <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="queue_link.h" />
-    <ClInclude Include="stack_link.h" />
-    <ClInclude Include="stack_seq.h" />
+    <ClInclude Include="Huffman.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
