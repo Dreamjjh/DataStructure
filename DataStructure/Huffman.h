@@ -1,11 +1,5 @@
 #pragma once
 
-//typedef int element_type;
-//struct HuffNode
-//{
-//	element_type data;  //数据域
-//	HuffNode* leftchild, * rightchild, * next;  //左孩子、右孩子、指向下一个结点
-//};
 #define MAX 10000
 struct HuffNode	//定义哈夫曼树结点
 {

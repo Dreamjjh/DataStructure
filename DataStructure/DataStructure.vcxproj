@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="源.cpp" />
+    <ClInclude Include="alundirgraph.h" />
+    <ClInclude Include="amundirgraph.h" />
+    <ClInclude Include="BinarySortTree.h" />
+    <ClInclude Include="Search.h" />
+    <ClInclude Include="sort.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Huffman.h" />
+    <ClCompile Include="源.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
