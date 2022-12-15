@@ -1,10 +1,10 @@
 #pragma once
 
-typedef int element_type;
+typedef int DataType;
 
 struct Node  //链表结点类型
 {
-	element_type data;  //数据域
+	DataType data;  //数据域
 	Node* next; //指针域
 	Node() :next(nullptr), data(-1) {}  //构造函数完成数据成员的初始化
 };
@@ -18,11 +18,11 @@ public:
 		if (!first)
 			throw "Initializing failed!";
 	}  
-	bool Push(element_type data);  //入队
+	bool Push(DataType data);  //入队
 	bool Pop();  //出队
 	bool Empty();  //判断是否为空
 	int Size();  //队列大小
-	element_type Front();  //获取队首元素
+	DataType Front();  //获取队首元素
 
 private:
 	Node* first;  //队首指针
@@ -30,7 +30,7 @@ private:
 };
 
 //入队
-bool Queue::Push(element_type data)
+bool Queue::Push(DataType data)
 {
 	Node* node = new Node;  //新建结点
 	if (!node)
@@ -46,7 +46,7 @@ bool Queue::Push(element_type data)
 //判断队列是否为空
 inline bool Queue::Empty()
 {
-	return first->next == nullptr;
+	return first == last;
 }
 
 //计算队列大小
@@ -64,13 +64,16 @@ bool Queue::Pop()
 {
 	if (Empty())  //队列为空
 		return false;
+	if (first->next == last)  //最后一个元素出队
+		last = first; //保证last指针有效
 	Node* temp = first->next; //保存待删除的结点
 	first->next = temp->next; //修改链的指向关系
 	delete temp;
+
 	return true;
 }
 //获取队首元素
-inline element_type Queue::Front()
+inline DataType Queue::Front()
 {
 	if (Empty())  //队列为空
 		throw "Queue is empty!";

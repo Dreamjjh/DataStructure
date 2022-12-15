@@ -1,5 +1,6 @@
 #ifndef _SORT_H_
 #define  _SORT_H_
+#include <iostream>
 template <typename T>
 class Sort
 {
@@ -14,18 +15,21 @@ private://数据成员
 	void Quick_Sort(T*& elem, int low, int high);//快速排序
 	int Partition(T*& elem, int low, int high);//快速排序的一次划分
 	void Simple_Selection_Sort(T*& elem, int n);//简单选择排序
-
+	void Merge_Sort(T*& elem, int low, int high); //归并排序
+	void Merge(T*& elem, int left, int mid, int right); //合并左右两个子序列
+	void AdjustHeap(T*& elem, int root, int lenth); //调整堆为大根堆
+	void Heap_Sort(T*& elem, int n);
 
 public:
 	Sort(int n) :size(n) //构造函数
 	{
-		elem = new T[size];
+		elem = new T[size + 1];
 		if (!elem)
 			throw "Memory allocated failed!";
 	}
-	Sort(int n, T* a) :size(n)
+	Sort(T* a, int n) :size(n)
 	{
-		elem = new T[size];
+		elem = new T[size + 1];
 		if (!elem)
 			throw "Memory allocated failed!";
 		for (int i = 0; i < size; i++)
@@ -36,7 +40,7 @@ public:
 		delete[]elem;
 	}
 
-	void Str_Ins_Sort()//直接插入排序
+	void StringInssertSort()//直接插入排序
 	{
 		Str_Insert_Sort(elem, size);
 	}
@@ -59,6 +63,14 @@ public:
 	void QuickSort(int low, int high)//快速排序
 	{
 		Quick_Sort(elem, 0, size);
+	}
+	void MergeSort(int low, int high)//归并排序
+	{
+		Merge_Sort(elem, low, high);
+	}
+	void HeapSort()
+	{
+		Heap_Sort(elem, size);
 	}
 	void Print()//输出数组元素
 	{
@@ -99,6 +111,67 @@ void Sort<T>::Simple_Selection_Sort(T*& elem, int n)
 			elem[k] = temp;
 		}
 	}
+}
+
+template<typename T>
+void Sort<T>::Merge_Sort(T*& elem, int low, int high)
+{
+	if (low >= high)  //出口
+		return;
+	int mid = (low + high) / 2;  //计算中间节点
+	Merge_Sort(elem, low, mid);    //分开处理左边部分
+	Merge_Sort(elem, mid + 1, high); //分开处理右边部分
+	//归并数组左右两边的子序列
+	Merge(elem, low, mid, high);
+}
+
+template<typename T>
+void Sort<T>::Merge(T*& elem, int left, int mid, int right)
+{
+	int i = left, j = mid + 1, k = left; //i,j作为子序列循环变量，k作为临时数组循环变量
+	T* temp = new T[size];  //申请辅助数组
+	while (i <= mid && j <= right) //两个子序列均没有结束
+	{
+		if (elem[i] < elem[j]) //前一半的子序列当前元素小于后一半的子序列当前元素
+			temp[k++] = elem[i++];
+		else
+			temp[k++] = elem[j++];
+	}
+	while (i <= mid)  //前一半子序列未结束，复制剩下的元素
+		temp[k++] = elem[i++];
+	while (j <= right) //后一半子序列未结束，复制剩下的元素
+		temp[k++] = elem[j++];
+	//复制临时数组到原始数组
+	for (int i = left; i <= right; i++)
+		elem[i] = temp[i];
+}
+
+template<typename T>
+ void Sort<T>::AdjustHeap(T*& elem, int root, int lenth)
+{
+	 for (root *= 2; root <= lenth; root *= 2)
+	 {
+		 if (root < lenth && elem[root] < elem[root + 1])//若右孩子大，则让root指向右孩子
+			 root++;
+		 if (elem[root] > elem[root / 2])  //若子结点大于父结点，则交换
+			 swap(elem[root], elem[root / 2]);
+		 else
+			 break;
+	 }
+}
+
+template<typename T>
+ void Sort<T>::Heap_Sort(T*& elem, int n)
+{
+	 
+	 for (int i = lenth / 2; i >= 1; i--)//建大根堆，从下向上调整
+		 AdjustHeap(elem, i, lenth);
+
+	 for (int i = lenth; i >= 2; i--)
+	 {
+		 swap(elem[i], elem[1]);  //把大的元素交换到后面
+		 AdjustHeap(elem, 1, i - 1);
+	 }
 }
 
 template <typename T>
@@ -198,9 +271,9 @@ void Sort<T>::PrintElems()
 	int i;
 	for (i = 0; i < size; i++)
 	{
-		if (i % 5 == 0)	//5个元素一行
-			cout << endl;
-		cout << elem[i] << " ";
+		std::cout << elem[i] << " ";
+		if ((i + 1) % 5 == 0)	//5个元素一行
+			std::cout << std::endl;
 	}
 }
 

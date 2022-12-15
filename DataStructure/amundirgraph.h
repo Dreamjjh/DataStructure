@@ -3,6 +3,7 @@
 #define __AMUNDIRGRAPH_H__
 
 #include <iostream>
+#include <queue>
 #include "linkqueue.h"
 using namespace std;
 
@@ -13,7 +14,7 @@ using namespace std;
 typedef char VertexType;  //顶点的数据类型为字符型
 typedef int ArcType;  //边的权值为整型
 
-bool visited[MAXVERNUM]; //辅助数组，用于标记顶点是否已被访问
+bool visited[MAXVERNUM] = { false }; //辅助数组，用于标记顶点是否已被访问
 int path[MAXVERNUM];  //记录路径
 
 struct AMUndirGraph
@@ -27,6 +28,7 @@ struct AMUndirGraph
 //函数声明部分
 int LocateVertex(const AMUndirGraph* graph, VertexType vertex);
 AMUndirGraph* CreateUndirGraph();
+void Display(const AMUndirGraph* graph);
 VertexType GetVertexInfo(const AMUndirGraph* graph, int pos);
 int FirstAdjVertex(const AMUndirGraph* graph, int vi);
 int NextAdjVertex(const AMUndirGraph* graph, int vi, int vj);
@@ -75,6 +77,24 @@ AMUndirGraph* CreateUndirGraph()
     }
     return graph;
 }
+
+//打印输出邻接矩阵
+void Display(const AMUndirGraph* graph)
+{
+    for (int i = 0; i < graph->vertexnum; i++)
+    {
+        for (int j = 0; j < graph->vertexnum; j++)
+        {
+            if (graph->arcs[i][j] < MAXINT)
+                cout << graph->arcs[i][j] << " ";
+            else
+                cout << "∞" << " ";
+        }
+        cout << endl;
+    }
+}
+
+
 
 //获取位置为pos元素的顶点值
 VertexType GetVertexInfo(const AMUndirGraph* graph, int pos)

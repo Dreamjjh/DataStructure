@@ -22,6 +22,7 @@
     <ClInclude Include="alundirgraph.h" />
     <ClInclude Include="amundirgraph.h" />
     <ClInclude Include="BinarySortTree.h" />
+    <ClInclude Include="linkqueue.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="sort.h" />
   </ItemGroup>
