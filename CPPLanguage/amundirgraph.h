@@ -7,25 +7,25 @@
 #include "linkqueue.h"
 using namespace std;
 
-//ÓÃÁ½¸öÊı×é·Ö±ğ´æ´¢¶¥µã±íºÍÁÚ½Ó¾ØÕó
-#define MAXINT 32767  //±íÊ¾¼«´óÖµ£¬¼´¡Ş
-#define MAXVERNUM 20  //±íÊ¾×î´ó¶¥µãÊıÁ¿
+//ç”¨ä¸¤ä¸ªæ•°ç»„åˆ†åˆ«å­˜å‚¨é¡¶ç‚¹è¡¨å’Œé‚»æ¥çŸ©é˜µ
+#define MAXINT 32767  //è¡¨ç¤ºæå¤§å€¼ï¼Œå³âˆ
+#define MAXVERNUM 20  //è¡¨ç¤ºæœ€å¤§é¡¶ç‚¹æ•°é‡
 
-typedef char VertexType;  //¶¥µãµÄÊı¾İÀàĞÍÎª×Ö·ûĞÍ
-typedef int ArcType;  //±ßµÄÈ¨ÖµÎªÕûĞÍ
+typedef char VertexType;  //é¡¶ç‚¹çš„æ•°æ®ç±»å‹ä¸ºå­—ç¬¦å‹
+typedef int ArcType;  //è¾¹çš„æƒå€¼ä¸ºæ•´å‹
 
-bool visited[MAXVERNUM] = { false }; //¸¨ÖúÊı×é£¬ÓÃÓÚ±ê¼Ç¶¥µãÊÇ·ñÒÑ±»·ÃÎÊ
-int path[MAXVERNUM];  //¼ÇÂ¼Â·¾¶
+bool visited[MAXVERNUM] = { false }; //è¾…åŠ©æ•°ç»„ï¼Œç”¨äºæ ‡è®°é¡¶ç‚¹æ˜¯å¦å·²è¢«è®¿é—®
+int path[MAXVERNUM];  //è®°å½•è·¯å¾„
 
 struct AMUndirGraph
 {
-	VertexType vertexs[MAXVERNUM];   //¶¥µã¼¯
-	ArcType arcs[MAXVERNUM][MAXVERNUM];//ÁÚ½Ó¾ØÕó
-    int degree[MAXVERNUM];  //¼ÇÂ¼Ã¿¸ö¶¥µãµÄ¶È
-	int vertexnum, arcnum;//Í¼Êµ¼ÊµÄ¶¥µãÊıÁ¿ºÍ±ßÊı
+	VertexType vertexs[MAXVERNUM];   //é¡¶ç‚¹é›†
+	ArcType arcs[MAXVERNUM][MAXVERNUM];//é‚»æ¥çŸ©é˜µ
+    int degree[MAXVERNUM];  //è®°å½•æ¯ä¸ªé¡¶ç‚¹çš„åº¦
+	int vertexnum, arcnum;//å›¾å®é™…çš„é¡¶ç‚¹æ•°é‡å’Œè¾¹æ•°
 };
 
-//º¯ÊıÉùÃ÷²¿·Ö
+//å‡½æ•°å£°æ˜éƒ¨åˆ†
 int LocateVertex(const AMUndirGraph* graph, VertexType vertex);
 AMUndirGraph* CreateUndirGraph();
 void Display(const AMUndirGraph* graph);
@@ -38,47 +38,47 @@ void BFSTraverse(const AMUndirGraph* graph);
 void BFS(const AMUndirGraph* graph, int vertex);
 void DFSEuLer(const AMUndirGraph* graph, int start, int step);
 
-//¶¨Î»¶¥µãÔÚÍ¼ÖĞµÄÎ»ÖÃ
+//å®šä½é¡¶ç‚¹åœ¨å›¾ä¸­çš„ä½ç½®
 int LocateVertex(const AMUndirGraph* graph, VertexType vertex)
 {
     for (int i = 0; i < graph->vertexnum; i++)
         if (graph->vertexs[i] == vertex)
-            return i;  //·µ»ØÎ»ÖÃ
-    return -1;  //ÕÒ²»µ½¸Ã¶¥µãµÄ´¦Àí
+            return i;  //è¿”å›ä½ç½®
+    return -1;  //æ‰¾ä¸åˆ°è¯¥é¡¶ç‚¹çš„å¤„ç†
 }
 
-//²ÉÓÃÁÚ½Ó¾ØÕó±íÊ¾·¨´´½¨ÎŞÏòÍ¼
+//é‡‡ç”¨é‚»æ¥çŸ©é˜µè¡¨ç¤ºæ³•åˆ›å»ºæ— å‘å›¾
 AMUndirGraph* CreateUndirGraph()
 {
     AMUndirGraph* graph = new AMUndirGraph;
-    cin >> graph->vertexnum >> graph->arcnum;//ÊäÈë¶¥µãÊıºÍ±ßÊı
+    cin >> graph->vertexnum >> graph->arcnum;//è¾“å…¥é¡¶ç‚¹æ•°å’Œè¾¹æ•°
     for (int i = 0; i < graph->vertexnum; i++)
-        cin >> graph->vertexs[i];  //ÊäÈë¶¥µãĞÅÏ¢
-     //³õÊ¼»¯ÁÚ½Ó¾ØÕó£¬±ßµÄÈ¨Öµ¾ùÖÃÎª¼«´óÖµ
+        cin >> graph->vertexs[i];  //è¾“å…¥é¡¶ç‚¹ä¿¡æ¯
+     //åˆå§‹åŒ–é‚»æ¥çŸ©é˜µï¼Œè¾¹çš„æƒå€¼å‡ç½®ä¸ºæå¤§å€¼
     for (int i = 0; i < graph->vertexnum; i++)
         for (int j = 0; j < graph->vertexnum; j++)
             graph->arcs[i][j] = MAXINT;
 
-    for (int i = 0; i < graph->vertexnum; i++)//³õÊ¼»¯¶¥µã¶ÈÊı
+    for (int i = 0; i < graph->vertexnum; i++)//åˆå§‹åŒ–é¡¶ç‚¹åº¦æ•°
         graph->degree[i] = 0;
 
     for (int i = 0; i < graph->arcnum; i++)
     {
-        VertexType v1, v2;  //¶¨ÒåÁ½¸ö¶¥µã
-        ArcType weight; //¶¨Òå±ßµÄÈ¨Öµ
+        VertexType v1, v2;  //å®šä¹‰ä¸¤ä¸ªé¡¶ç‚¹
+        ArcType weight; //å®šä¹‰è¾¹çš„æƒå€¼
         cin >> v1 >> v2 >> weight;
         int x = LocateVertex(graph,v1), y = LocateVertex(graph, v2);
         if (x == -1 || y == -1)
             throw "Error: Vertex position is in valid!";
-        graph->arcs[x][y] = weight;//±ß£¨v1, v2£©µÄÈ¨ÖµÖÃÎªweight
-        graph->arcs[y][x] = weight;//±ß£¨v2, v1£©µÄÈ¨ÖµÖÃÎªweight
+        graph->arcs[x][y] = weight;//è¾¹ï¼ˆv1, v2ï¼‰çš„æƒå€¼ç½®ä¸ºweight
+        graph->arcs[y][x] = weight;//è¾¹ï¼ˆv2, v1ï¼‰çš„æƒå€¼ç½®ä¸ºweight
         graph->degree[x]++;
-        graph->degree[y]++;  //¼ÇÂ¼Ã¿¸ö¶¥µãµÄ¶ÈÊı
+        graph->degree[y]++;  //è®°å½•æ¯ä¸ªé¡¶ç‚¹çš„åº¦æ•°
     }
     return graph;
 }
 
-//´òÓ¡Êä³öÁÚ½Ó¾ØÕó
+//æ‰“å°è¾“å‡ºé‚»æ¥çŸ©é˜µ
 void Display(const AMUndirGraph* graph)
 {
     for (int i = 0; i < graph->vertexnum; i++)
@@ -88,7 +88,7 @@ void Display(const AMUndirGraph* graph)
             if (graph->arcs[i][j] < MAXINT)
                 cout << graph->arcs[i][j] << " ";
             else
-                cout << "¡Ş" << " ";
+                cout << "âˆ" << " ";
         }
         cout << endl;
     }
@@ -96,111 +96,111 @@ void Display(const AMUndirGraph* graph)
 
 
 
-//»ñÈ¡Î»ÖÃÎªposÔªËØµÄ¶¥µãÖµ
+//è·å–ä½ç½®ä¸ºposå…ƒç´ çš„é¡¶ç‚¹å€¼
 VertexType GetVertexInfo(const AMUndirGraph* graph, int pos)
 {
-    if (pos < 0 || pos >= graph->vertexnum)  //Î»ÖÃ²»ºÏ·¨
+    if (pos < 0 || pos >= graph->vertexnum)  //ä½ç½®ä¸åˆæ³•
         throw "Vertex position is invalid!";
     return graph->vertexs[pos];
 }
 
-//¼ÆËã¶¥µãviµÄµÚÒ»¸öÁÚ½Óµã
+//è®¡ç®—é¡¶ç‚¹viçš„ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹
 int FirstAdjVertex(const AMUndirGraph* graph, int vi)
 {
-    if (vi < 0 || vi >= graph->vertexnum)  //Î»ÖÃ²»ºÏ·¨
+    if (vi < 0 || vi >= graph->vertexnum)  //ä½ç½®ä¸åˆæ³•
         throw "Vertex position is invalid!";
-    for (int i = 0; i < graph->vertexnum; i++) //²éÕÒÁÚ½Óµã
+    for (int i = 0; i < graph->vertexnum; i++) //æŸ¥æ‰¾é‚»æ¥ç‚¹
         if (graph->arcs[vi][i] != MAXINT)
             return i;
-    return -1;  //²»´æÔÚÁÚ½Óµã
+    return -1;  //ä¸å­˜åœ¨é‚»æ¥ç‚¹
 }
 
-//¼ÆËã¶¥µãviÏà¶ÔÓÚvjµÄÏÂÒ»¸öÁÚ½Óµã
+//è®¡ç®—é¡¶ç‚¹viç›¸å¯¹äºvjçš„ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
 int NextAdjVertex(const AMUndirGraph* graph, int vi, int vj)
 {
-    if (vi < 0 || vi >= graph->vertexnum || vj < 0 || vj >= graph->vertexnum)  //Î»ÖÃ²»ºÏ·¨
+    if (vi < 0 || vi >= graph->vertexnum || vj < 0 || vj >= graph->vertexnum)  //ä½ç½®ä¸åˆæ³•
         throw "Vertex position is invalid!";
     if (vi == vj)
         throw "Vertex vi cannot equl vertex vj!";
-    for (int i = vj + 1; i < graph->vertexnum; i++) //²éÕÒÁÚ½Óµã
+    for (int i = vj + 1; i < graph->vertexnum; i++) //æŸ¥æ‰¾é‚»æ¥ç‚¹
         if (graph->arcs[vi][i] != MAXINT)
             return i;
-    return -1;  //²»´æÔÚÁÚ½Óµã
+    return -1;  //ä¸å­˜åœ¨é‚»æ¥ç‚¹
 }
 
-//DFS±éÀúÎŞÏòÍ¼£¨·ÇÁ¬Í¨Í¼ºÍÁ¬Í¨Í¼¾ù¿É£©
+//DFSéå†æ— å‘å›¾ï¼ˆéè¿é€šå›¾å’Œè¿é€šå›¾å‡å¯ï¼‰
 void DFSTraverse(const AMUndirGraph* graph)
 {
-    for (int i = 0; i < graph->vertexnum; i++)  //¶¥µãÈ«²¿ÖØÖÃÎªÎ´·ÃÎÊ×´Ì¬
+    for (int i = 0; i < graph->vertexnum; i++)  //é¡¶ç‚¹å…¨éƒ¨é‡ç½®ä¸ºæœªè®¿é—®çŠ¶æ€
         visited[i] = false;
     for (int i = 0; i < graph->vertexnum; i++)
         if (!visited[i])
-            DFS(graph, i);//¶ÔÎ´·ÃÎÊ¶¥µãµ÷ÓÃDFS£¬ÈôÊÇÁ¬Í¨Í¼Ö»Ö´ĞĞÒ»´Î
+            DFS(graph, i);//å¯¹æœªè®¿é—®é¡¶ç‚¹è°ƒç”¨DFSï¼Œè‹¥æ˜¯è¿é€šå›¾åªæ‰§è¡Œä¸€æ¬¡
 }
 
-//DFS±éÀúÎŞÏòÍ¼£¨Á¬Í¨Í¼£©
+//DFSéå†æ— å‘å›¾ï¼ˆè¿é€šå›¾ï¼‰
 void DFS(const AMUndirGraph* graph, int vertex)
 {
-    cout << graph->vertexs[vertex] << " ";  //·ÃÎÊ¶¥µã
-    visited[vertex] = true; //±ê¼ÇÎªÒÑ·ÃÎÊ
-    //ÒÀ´Î¼ì²é¶¥µãvertexµÄÁÚ½Óµã 
+    cout << graph->vertexs[vertex] << " ";  //è®¿é—®é¡¶ç‚¹
+    visited[vertex] = true; //æ ‡è®°ä¸ºå·²è®¿é—®
+    //ä¾æ¬¡æ£€æŸ¥é¡¶ç‚¹vertexçš„é‚»æ¥ç‚¹ 
     for (int v = FirstAdjVertex(graph,vertex); v >= 0; v = NextAdjVertex(graph,vertex, v))
         if (!visited[v])
             DFS(graph, v);
 }
 
-//BFS±éÀúÎŞÏòÍ¼£¨·ÇÁ¬Í¨Í¼£©
+//BFSéå†æ— å‘å›¾ï¼ˆéè¿é€šå›¾ï¼‰
 void BFSTraverse(const AMUndirGraph* graph)
 {
-    for (int i = 0; i < graph->vertexnum; i++)  //¶¥µãÈ«²¿ÖØÖÃÎªÎ´·ÃÎÊ×´Ì¬
+    for (int i = 0; i < graph->vertexnum; i++)  //é¡¶ç‚¹å…¨éƒ¨é‡ç½®ä¸ºæœªè®¿é—®çŠ¶æ€
         visited[i] = false;
     for (int i = 0; i < graph->vertexnum; i++)
         if (!visited[i])
-            BFS(graph, i);//¶ÔÎ´·ÃÎÊ¶¥µãµ÷ÓÃBFS£¬ÈôÊÇÁ¬Í¨Í¼Ö»Ö´ĞĞÒ»´Î
+            BFS(graph, i);//å¯¹æœªè®¿é—®é¡¶ç‚¹è°ƒç”¨BFSï¼Œè‹¥æ˜¯è¿é€šå›¾åªæ‰§è¡Œä¸€æ¬¡
 }
 
-//BFS±éÀúÎŞÏòÍ¼£¨Á¬Í¨Í¼£©
+//BFSéå†æ— å‘å›¾ï¼ˆè¿é€šå›¾ï¼‰
 void BFS(const AMUndirGraph* graph, int vertex)
 {
-    cout << graph->vertexs[vertex] << " ";  //·ÃÎÊ¶¥µãvertex
-    visited[vertex] = true; //¶¥µãvertex±ê¼ÇÎªÒÑ·ÃÎÊ
-    Queue queue;  //´´½¨¶ÓÁĞ²¢³õÊ¼»¯¶ÓÁĞ
-    queue.Push(vertex);  //¶¥µãvertexÈë¶Ó
+    cout << graph->vertexs[vertex] << " ";  //è®¿é—®é¡¶ç‚¹vertex
+    visited[vertex] = true; //é¡¶ç‚¹vertexæ ‡è®°ä¸ºå·²è®¿é—®
+    Queue queue;  //åˆ›å»ºé˜Ÿåˆ—å¹¶åˆå§‹åŒ–é˜Ÿåˆ—
+    queue.Push(vertex);  //é¡¶ç‚¹vertexå…¥é˜Ÿ
     while (!queue.Empty())
     {
-        int vi = queue.Front(); //ÁÙÊ±¶¥µã±£´æ¶ÓÊ×ÔªËØ
-        queue.Pop();  //³ö¶Ó
-        //¶Ô¶¥µãviÉĞÎ´·ÃÎÊ¹ıµÄÁÚ½Ó¶¥µã½øĞĞ·ÃÎÊ
+        int vi = queue.Front(); //ä¸´æ—¶é¡¶ç‚¹ä¿å­˜é˜Ÿé¦–å…ƒç´ 
+        queue.Pop();  //å‡ºé˜Ÿ
+        //å¯¹é¡¶ç‚¹viå°šæœªè®¿é—®è¿‡çš„é‚»æ¥é¡¶ç‚¹è¿›è¡Œè®¿é—®
         for (int vj = FirstAdjVertex(graph,vi); vj >= 0; vj = NextAdjVertex(graph,vi,vj))
-            if (!visited[vj]) //ÁÚ½ÓµãÎ´·ÃÎÊ
+            if (!visited[vj]) //é‚»æ¥ç‚¹æœªè®¿é—®
             {
-                cout << graph->vertexs[vj] << " ";  //·ÃÎÊ¶¥µãvj
-                visited[vj] = true; //±ê¼Ç¶¥µãvjÎªÒÑ±»·ÃÎÊ
-                queue.Push(vj); //ÁÚ½ÓµãvjÈë¶Ó
+                cout << graph->vertexs[vj] << " ";  //è®¿é—®é¡¶ç‚¹vj
+                visited[vj] = true; //æ ‡è®°é¡¶ç‚¹vjä¸ºå·²è¢«è®¿é—®
+                queue.Push(vj); //é‚»æ¥ç‚¹vjå…¥é˜Ÿ
             }        
     }
 }
 
-//Êä³öÂ·¾¶
+//è¾“å‡ºè·¯å¾„
 void Print(const AMUndirGraph* graph)
 {
     for (int i = 1; i <= graph->arcnum; i++)
-        cout << path[i] << "¡ú";
+        cout << path[i] << "â†’";
     cout << path[graph->arcnum] << endl;
 }
 
-//startÎªÆğµã£¬stepÎª²½Êı
+//startä¸ºèµ·ç‚¹ï¼Œstepä¸ºæ­¥æ•°
 void DFSEuLer(AMUndirGraph* graph, int start, int step)
 {
-    path[step] = start;  //¼ÇÂ¼Â·¾¶
-    if (step == graph->arcnum)  //×ßÍêËùÓĞ±ßÔòÊä³öÂ·¾¶
+    path[step] = start;  //è®°å½•è·¯å¾„
+    if (step == graph->arcnum)  //èµ°å®Œæ‰€æœ‰è¾¹åˆ™è¾“å‡ºè·¯å¾„
         Print(graph);
-    for(int i=0;i<graph->vertexnum;i++) //±éÀúËùÓĞ¶¥µã
+    for(int i=0;i<graph->vertexnum;i++) //éå†æ‰€æœ‰é¡¶ç‚¹
         if (graph->arcs[start][i])
         {
-            graph->arcs[start][i] = graph->arcs[i][start] = 0; //É¾³ı¸ÃÌõ±ß£¬±ÜÃâÖØ¸´×ß
-            DFSEuLer(graph, i, step + 1);  //ÒÔiÎªÆğµã£¬½øÒ»²½ÉîËÑ
-            graph->arcs[start][i] = graph->arcs[i][start] = 0; //»ØËİÒ»²½£¬ĞŞ¸Ä¸ÃÌõ±ß
+            graph->arcs[start][i] = graph->arcs[i][start] = 0; //åˆ é™¤è¯¥æ¡è¾¹ï¼Œé¿å…é‡å¤èµ°
+            DFSEuLer(graph, i, step + 1);  //ä»¥iä¸ºèµ·ç‚¹ï¼Œè¿›ä¸€æ­¥æ·±æœ
+            graph->arcs[start][i] = graph->arcs[i][start] = 0; //å›æº¯ä¸€æ­¥ï¼Œä¿®æ”¹è¯¥æ¡è¾¹
         }
 }
 
