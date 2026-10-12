@@ -39,5 +39,6 @@ List* InitList(int maxsize)
 
 int main()
 {
-    
+
+    return 0;
 }
