@@ -35,6 +35,15 @@ List* InitList(int maxsize)
     }
     return nullptr;
 }
+/*函数功能：判断顺序表是否为空
+ *函数形参：给定一个顺序表List * list
+ *函数返回值：如果顺序表为空则返回true，否则返回false，bool类型
+*/
+bool IsEmpty(List* list)
+{
+    return list->
+}
+
 
 
 int main()
